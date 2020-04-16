@@ -1,17 +1,12 @@
 import React from 'react'
-import { DatePicker } from 'antd'
-import moment from 'dayjs'
-const { RangePicker } = DatePicker
-const dateFormat = 'YYYY/MM/DD'
+import { HashRouter, Switch, Redirect, Route } from 'react-router-dom'
+import LayoutMenu from './layout'
 const App = () => (
-  <div>
-    <RangePicker
-      defaultValue={[
-        moment('2016/01/01', dateFormat),
-        moment('2015/01/01', dateFormat),
-      ]}
-      format={dateFormat}
-    />
-  </div>
+  <HashRouter>
+    <Switch>
+      <Route exact path="/:name" component={LayoutMenu} />
+      <Redirect to="/index" />
+    </Switch>
+  </HashRouter>
 )
 export default App

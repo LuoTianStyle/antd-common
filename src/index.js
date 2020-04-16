@@ -8,15 +8,13 @@ import zhCN from 'antd/es/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
 ReactDOM.render(
-  <React.StrictMode>
     <ConfigProvider locale={zhCN}>
-      <App />
-    </ConfigProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+        <App />
+    </ConfigProvider>,
+    document.getElementById('root')
 );
 if (module.hot) {
-  module.hot.accept();
+    module.hot.accept();
 }
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
