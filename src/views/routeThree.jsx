@@ -4,16 +4,25 @@ import { withRouter } from 'react-router-dom';
 import TabRouter from '@/components/tabRouter';
 const RouteThree = (props) => {
     const { history, remove } = props;
+    console.log(props);
     const goto = () => {
         history.push('route_test_1');
     };
     const close = () => {
         const currentRoute = history.location.pathname.substr(1);
-        remove(currentRoute);
+        if (remove) {
+            remove(currentRoute);
+        } else {
+          history.push('/index');
+        }
     };
     const closeAndGoto = () => {
         const currentRoute = history.location.pathname.substr(1);
-        remove(currentRoute, 'route_test_1');
+        if (remove) {
+            remove(currentRoute, 'route_test_1');
+        } else {
+            history.push('/route_test_1');
+        }
     };
     return (
         <div>

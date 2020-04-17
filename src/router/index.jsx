@@ -1,5 +1,6 @@
 import React from 'react';
 import { HomeOutlined, LinkOutlined } from '@ant-design/icons';
+import TreeUtil from '@/utils/tree';
 import Index from '@/views/index';
 import RouteOne from '@/views/routeOne';
 import RouteTwo from '@/views/routeTwo';
@@ -10,6 +11,7 @@ export const Router = [
         path: 'index',
         icon: <HomeOutlined />,
         component: Index,
+        closable: false,
     },
     {
         name: '路由',
@@ -33,6 +35,8 @@ export const Router = [
                 path: 'route_test_3',
                 icon: <LinkOutlined />,
                 component: RouteThree,
+
+                closable: false,
             },
             {
                 name: '测试4',
@@ -44,19 +48,22 @@ export const Router = [
         ],
     },
 ];
-export const RouteMap = [
-    { name: '首页', path: 'index', component: Index, closable: false },
-    { name: '测试1', path: 'route_test_1', component: RouteOne },
-    { name: '测试2', path: 'route_test_2', component: RouteTwo },
-    {
-        name: '测试3',
-        path: 'route_test_3',
-        component: RouteThree,
-        closable: false,
-    },
-    {
-        name: '测试4',
-        path: 'route_test_4',
-        component: RouteThree,
-    },
-];
+const RouteArr = [];
+const routeTree = {
+    children: Router,
+};
+const callbacks = (tree, stack) => {
+    if (!tree.children) {
+        const text = [];
+        stack.forEach((item) => {
+            if (item.name) {
+                text.push(item.name);
+            }
+        });
+        tree.text = text;
+        RouteArr.push(tree);
+    }
+};
+TreeUtil.dfsForEach(routeTree, callbacks);
+console.log(RouteArr);
+export const RouteMap = RouteArr;

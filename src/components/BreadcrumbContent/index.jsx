@@ -1,6 +1,9 @@
 import React from 'react';
 import { Breadcrumb } from 'antd';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
+import { RouteMap } from '@/router';
+const { Item } = Breadcrumb;
 const ContentCenter = styled.div`
     margin: 24px 24px 0 24px;
     min-height: calc(100vh - 64px - 50px - 50px - 24px);
@@ -13,18 +16,36 @@ const ContentBreadcrumb = styled(Breadcrumb)`
     line-height: 50px;
     padding-left: 24px;
 `;
-
-const BreadcrumbContent = () => {
+const ItemLink = styled(Item)`
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+        color: #f1892d;
+    }
+`;
+const BreadcrumbContent = (props) => {
+    const { history } = props;
+    const currentPath = history.location.pathname.substr(1);
+    const currentPane = RouteMap.find((item) => item.path === currentPath);
+    const Content = currentPane.component;
+    const LinkTo = (e) => {
+        history.push(e);
+    };
     return (
         <>
             <ContentBreadcrumb>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>List</Breadcrumb.Item>
-                <Breadcrumb.Item>App</Breadcrumb.Item>
+                <ItemLink onClick={() => LinkTo('/index')}>首页</ItemLink>
+                {currentPane.path !== 'index'
+                    ? currentPane.text.map((item, key) => (
+                          <Item key={key}>{item}</Item>
+                      ))
+                    : ''}
             </ContentBreadcrumb>
-            <ContentCenter>1</ContentCenter>
+            <ContentCenter>
+                <Content />
+            </ContentCenter>
         </>
     );
 };
 
-export default BreadcrumbContent;
+export default withRouter(BreadcrumbContent);

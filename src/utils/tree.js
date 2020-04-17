@@ -43,9 +43,11 @@ export default class TreeUtil {
     static dfsForEach(tree, callback, stack = []) {
         stack.push(tree);
         callback(tree, stack);
-        tree.children.forEach((child) => {
-            TreeUtil.dfsForEach(child, callback, stack);
-        });
+        if (tree.children) {
+            tree.children.forEach((child) => {
+                TreeUtil.dfsForEach(child, callback, stack);
+            });
+        }
         stack.pop();
     }
 }

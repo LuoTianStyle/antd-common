@@ -32,7 +32,7 @@ const RightSider = styled(Layout)`
         transition: color 0.3s;
     }
     .trigger:hover {
-        color: #1890ff;
+        color: #f1892d;
     }
 `;
 const RightHeader = styled(Header)`

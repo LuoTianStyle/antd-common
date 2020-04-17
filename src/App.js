@@ -1,10 +1,10 @@
 import React from 'react'
 import { HashRouter, Switch, Redirect, Route } from 'react-router-dom'
-import LayoutMenu from './layout'
+import BasicLayout from './layout/BasicLayout'
 const App = () => (
   <HashRouter>
     <Switch>
-      <Route exact path="/:name" component={LayoutMenu} />
+      <Route exact path="/:name" component={BasicLayout} />
       <Redirect to="/index" />
     </Switch>
   </HashRouter>

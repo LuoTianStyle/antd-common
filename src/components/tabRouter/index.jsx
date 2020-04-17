@@ -5,6 +5,7 @@ import React from 'react';
 const TabRouter = (Component) => {
     //返回另一个组件
     return (props) => {
+        console.log(props);
         // 最后使用context 渲染这个被封装组件
         return (
             <RouterContext.Consumer>
