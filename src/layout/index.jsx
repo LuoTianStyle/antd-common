@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import router from '../router';
-import TabMenu from './tabMenu';
+import Menus from '@/components/menu';
+import Right from '@/components/right';
 import Footer from '@/components/footer';
+
 const { Header, Sider, Content } = Layout;
-const { SubMenu } = Menu;
+
 const LeftSider = styled(Sider)`
     position: fixed;
     top: 0;
@@ -51,27 +52,10 @@ const RightContent = styled(Content)`
     margin-top: 64px;
     min-height: calc(100vh - 64px);
 `;
-const ContentCenter = styled.div`
-    margin: 24px 24px 0 24px;
-    min-height: calc(100vh - 64px - 50px - 50px - 24px);
-    background: #fff;
-    padding: 24px;
-`;
-const ContentBreadcrumb = styled(Breadcrumb)`
-    background: #fff;
-    height: 50px;
-    line-height: 50px;
-    padding-left: 24px;
-`;
-
 const BasicLayout = (props) => {
-    const selectedKey = props.match.params.name;
     const [collapsed, setCollapsed] = useState(false);
     const toggle = () => {
         setCollapsed(!collapsed);
-    };
-    const clickMenu = (evt) => {
-        props.history.push(`/${evt.key}`);
     };
     return (
         <Layout>
@@ -83,49 +67,7 @@ const BasicLayout = (props) => {
                 collapsed={collapsed}
             >
                 <Logo />
-                <Menu
-                    theme="light"
-                    mode="inline"
-                    defaultSelectedKeys={['index']}
-                    selectedKeys={[selectedKey]}
-                >
-                    {router.map((item) => {
-                        if (item.children) {
-                            return (
-                                <SubMenu
-                                    key={item.path}
-                                    mode="inline"
-                                    inlineCollapsed={true}
-                                    title={
-                                        <span>
-                                            {/* <Icon type="user" /> */}
-                                            {/* <UserOutlined /> */}
-                                            {item.name}
-                                        </span>
-                                    }
-                                >
-                                    {item.children &&
-                                        item.children.map((item) => {
-                                            return (
-                                                <Menu.Item
-                                                    onClick={clickMenu}
-                                                    key={item.path}
-                                                >
-                                                    {item.name}
-                                                </Menu.Item>
-                                            );
-                                        })}
-                                </SubMenu>
-                            );
-                        } else {
-                            return (
-                                <Menu.Item onClick={clickMenu} key={item.path}>
-                                    {item.name}
-                                </Menu.Item>
-                            );
-                        }
-                    })}
-                </Menu>
+                <Menus />
             </LeftSider>
             <RightSider extend={collapsed.toString()}>
                 <RightHeader extend={collapsed.toString()}>
@@ -138,14 +80,7 @@ const BasicLayout = (props) => {
                     )}
                 </RightHeader>
                 <RightContent>
-                    <ContentBreadcrumb>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </ContentBreadcrumb>
-                    <ContentCenter>
-                        <TabMenu />
-                    </ContentCenter>
+                    <Right />
                     <Footer />
                 </RightContent>
             </RightSider>
