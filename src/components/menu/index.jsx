@@ -43,6 +43,8 @@ const Menus = (props) => {
                                                 <MenuName>{item.name}</MenuName>
                                             </Item>
                                         );
+                                    } else {
+                                        return '';
                                     }
                                 })}
                             </SubMenu>
@@ -55,6 +57,8 @@ const Menus = (props) => {
                             </Item>
                         );
                     }
+                } else {
+                    return '';
                 }
             })}
         </Menu>

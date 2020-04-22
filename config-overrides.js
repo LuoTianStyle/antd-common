@@ -7,7 +7,6 @@ const {
 } = require('customize-cra');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 const path = require('path');
-const resolve = (dir) => path.join(__dirname, '.', dir);
 module.exports = override(
     addWebpackAlias({
         '@': path.resolve(__dirname, 'src'),

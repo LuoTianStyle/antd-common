@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { withRouter } from 'react-router-dom';
-import TabRouter from '@/components/tabRouter';
+import TabRouter from '@/components/TabRouter';
 const RouteThree = (props) => {
     const { history, remove } = props;
     console.log(props);

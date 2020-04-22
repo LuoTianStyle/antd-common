@@ -1,5 +1,5 @@
 import React from 'react';
-import { HomeOutlined, LinkOutlined } from '@ant-design/icons';
+import { HomeOutlined, LinkOutlined, UserOutlined } from '@ant-design/icons';
 import TreeUtil from '@/utils/tree';
 import Index from '@/views/index';
 import RouteOne from '@/views/routeOne';
@@ -35,8 +35,6 @@ export const Router = [
                 path: 'route_test_3',
                 icon: <LinkOutlined />,
                 component: RouteThree,
-
-                closable: false,
             },
             {
                 name: '测试4',
@@ -46,6 +44,12 @@ export const Router = [
                 component: RouteThree,
             },
         ],
+    },
+    {
+        name: '用户管理',
+        path: 'user',
+        icon: <UserOutlined />,
+        component: Index,
     },
 ];
 const RouteArr = [];

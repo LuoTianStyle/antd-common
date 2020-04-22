@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs, Button, Menu, Dropdown } from 'antd';
-import { AlignRightOutlined } from '@ant-design/icons';
-import { withRouter } from 'react-router-dom';
-import styled from 'styled-components';
-import { RouteMap } from '@/router';
-import RouterContext from '@/context/routerContext';
+import React, { useState, useEffect } from './node_modules/react';
+import { Tabs, Button, Menu, Dropdown } from './node_modules/antd';
+import { AlignRightOutlined } from './node_modules/@ant-design/icons';
+import { withRouter } from './node_modules/react-router-dom';
+import styled from './node_modules/styled-components';
+import { RouteMap } from './node_modules/@/router';
+import RouterContext from './node_modules/@/context/routerContext';
 const { TabPane } = Tabs;
 const TabWrapper = styled(Tabs)`
     margin: 24px 24px 0 24px;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import Headers from '@/components/header';
 import Menus from '@/components/menu';
 import Right from '@/components/right';
 import Footer from '@/components/footer';
@@ -24,16 +24,6 @@ const Logo = styled.div`
 const RightSider = styled(Layout)`
     padding-left: ${(props) => (props.extend === 'true' ? '80px' : '256px')};
     transition: all 0.2s;
-    .trigger {
-        font-size: 20px;
-        line-height: 64px;
-        padding: 0 24px;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-    .trigger:hover {
-        color: #f1892d;
-    }
 `;
 const RightHeader = styled(Header)`
     position: fixed;
@@ -43,9 +33,10 @@ const RightHeader = styled(Header)`
     z-index: 9;
     width: ${(props) =>
         props.extend === 'true' ? 'calc(100% - 80px)' : 'calc(100% - 256px)'};
-    background: #fff;
+    background: #fff !important;
     padding: 0;
     box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    display: flex;
 `;
 const RightContent = styled(Content)`
     position: relative;
@@ -54,9 +45,6 @@ const RightContent = styled(Content)`
 `;
 const BasicLayout = (props) => {
     const [collapsed, setCollapsed] = useState(false);
-    const toggle = () => {
-        setCollapsed(!collapsed);
-    };
     return (
         <Layout>
             <LeftSider
@@ -71,13 +59,10 @@ const BasicLayout = (props) => {
             </LeftSider>
             <RightSider extend={collapsed.toString()}>
                 <RightHeader extend={collapsed.toString()}>
-                    {React.createElement(
-                        collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-                        {
-                            className: 'trigger',
-                            onClick: toggle,
-                        }
-                    )}
+                    <Headers
+                        collapsed={collapsed}
+                        toggle={() => setCollapsed(!collapsed)}
+                    />
                 </RightHeader>
                 <RightContent>
                     <Right />
