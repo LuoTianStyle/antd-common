@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from './node_modules/react';
-import { Tabs, Button, Menu, Dropdown } from './node_modules/antd';
-import { AlignRightOutlined } from './node_modules/@ant-design/icons';
-import { withRouter } from './node_modules/react-router-dom';
-import styled from './node_modules/styled-components';
-import { RouteMap } from './node_modules/@/router';
-import RouterContext from './node_modules/@/context/routerContext';
+import React, { useState, useEffect } from 'react';
+import { Tabs, Button, Menu, Dropdown } from 'antd';
+import { AlignRightOutlined } from '@ant-design/icons';
+import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+import { RouteMap } from '@/router';
+import RouterContext from '@/context/RouterContext';
 const { TabPane } = Tabs;
 const TabWrapper = styled(Tabs)`
     margin: 24px 24px 0 24px;
@@ -13,30 +13,35 @@ const TabWrapper = styled(Tabs)`
     padding: 24px;
 `;
 const TabContent = (props) => {
-    const { history, match } = props;
+    const { history, location } = props;
     const paneActive = RouteMap.filter((item) => item.closable === false);
     const [activeKey, setActiveKey] = useState(paneActive[0].path);
     const [panes, setPanes] = useState(paneActive);
     useEffect(() => {
         const currentPath = props.history.location.pathname.substr(1);
         const path_array = panes.map((item) => item.path);
+
         if (!path_array.includes(currentPath)) {
             const currentPane = RouteMap.find(
                 (item) => item.path === currentPath
             );
-            const closable =
-                currentPane.closable === undefined
-                    ? true
-                    : currentPane.closable;
-            const newPane = {
-                name: currentPane.name,
-                path: currentPath,
-                closable,
-            };
-            setPanes([...panes, newPane]);
+            if (!currentPane) {
+                history.push(`/404`);
+            } else {
+                const closable =
+                    currentPane.closable === undefined
+                        ? true
+                        : currentPane.closable;
+                const newPane = {
+                    name: currentPane.name,
+                    path: currentPath,
+                    closable,
+                };
+                setPanes([...panes, newPane]);
+            }
         }
         setActiveKey(currentPath);
-    }, [props, panes]);
+    }, [props, panes, history]);
 
     const onChange = (activeKey) => {
         setActiveKey(activeKey);
@@ -74,7 +79,7 @@ const TabContent = (props) => {
         }
     };
     const onTabClick = (e) => {
-        if (e !== match.params.name) {
+        if (e !== location.pathname.slice(1)) {
             history.push(`/${e}`);
         }
     };

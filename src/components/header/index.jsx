@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { message, Menu, Dropdown, Badge, Avatar } from 'antd';
+import { withRouter } from 'react-router-dom';
+import screenfull from 'screenfull';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     BellOutlined,
     UserOutlined,
+    SettingOutlined,
+    LogoutOutlined,
+    FullscreenOutlined,
+    FullscreenExitOutlined,
+    AntDesignOutlined,
 } from '@ant-design/icons';
 import styled from 'styled-components';
 import ColorPicker from '@/components/ColorPicker/index';
+const { Item } = Menu;
 const Containner = styled.div`
     width: 100%;
     height: 64px;
@@ -45,41 +53,44 @@ const Notice = styled(Trigger)`
         color: rgba(0, 0, 0, 0.65);
     }
 `;
-const Info = styled(Theme)``;
-const menu = (
-    <Menu>
-        <Menu.Item>
-            <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="http://www.alipay.com/"
-            >
-                1st menu item
-            </a>
-        </Menu.Item>
-        <Menu.Item>
-            <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="http://www.taobao.com/"
-            >
-                2nd menu item
-            </a>
-        </Menu.Item>
-        <Menu.Item>
-            <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="http://www.tmall.com/"
-            >
-                3rd menu item
-            </a>
-        </Menu.Item>
-    </Menu>
-);
+const Info = styled(Theme)`
+    padding-right: 0;
+    cursor: pointer;
+`;
+const UserInfo = styled.div`
+    display: flex;
+    align-items: center;
+`;
+const NickName = styled.div`
+    max-width: 150px;
+    padding: 0 15px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+const ItemMy = styled(Item)`
+    width: 182px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 18px;
+    font-size: 14px;
+`;
+const UserItem = styled(ItemMy)`
+    text-align: center;
+    padding-left: 12px;
+    cursor: auto;
+`;
+const NickNameItem = styled.div`
+    padding-top: 5px;
+    line-height: 25px;
+    text-align: center;
+    white-space: normal;
+    word-break: break-all;
+`;
 const Header = (props) => {
-    const { collapsed, toggle } = props;
+    const { collapsed, toggle, history } = props;
     const [color, setColor] = useState('#f1892d');
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const changeColor = (color) => {
         window.less
             .modifyVars({
@@ -94,6 +105,22 @@ const Header = (props) => {
                 message.success('更换主题颜色成功');
             });
     };
+    const toggleFullscreen = () => {
+        if (screenfull.isEnabled) {
+            screenfull.toggle().then(() => {
+                setIsFullscreen(screenfull.isFullscreen);
+            });
+        }
+    };
+    const handleResize = () => {
+        if (screenfull.isFullscreen !== isFullscreen) {
+            setIsFullscreen(screenfull.isFullscreen);
+        }
+    };
+    const logout = () => {
+        localStorage.removeItem('userInfo');
+        history.push('/login');
+    };
     useEffect(() => {
         const userTheme = JSON.parse(localStorage.getItem('user-theme'));
         if (userTheme) {
@@ -104,6 +131,50 @@ const Header = (props) => {
             setColor(defaultColor);
         }
     }, []);
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return function cleanup() {
+            window.removeEventListener('resize', handleResize);
+        };
+    });
+    const menu = (
+        <Menu>
+            <UserItem>
+                <Avatar size={64} src="/logo192.png" />
+                <NickNameItem>流~星~泪流~星~泪流~星~泪</NickNameItem>
+            </UserItem>
+            <ItemMy>
+                <UserOutlined />
+                个人中心
+            </ItemMy>
+            <ItemMy>
+                <SettingOutlined />
+                个人设置
+            </ItemMy>
+            <ItemMy onClick={() => toggleFullscreen()}>
+                {isFullscreen ? (
+                    <>
+                        <FullscreenExitOutlined />
+                        退出全屏
+                    </>
+                ) : (
+                    <>
+                        <FullscreenOutlined />
+                        切换全屏
+                    </>
+                )}
+            </ItemMy>
+            <ItemMy onClick={() => changeColor('#f1892d')}>
+                <AntDesignOutlined />
+                恢复默认主题
+            </ItemMy>
+            <Menu.Divider />
+            <ItemMy onClick={logout}>
+                <LogoutOutlined />
+                退出登录
+            </ItemMy>
+        </Menu>
+    );
     return (
         <Containner>
             <Trigger onClick={toggle}>
@@ -119,15 +190,15 @@ const Header = (props) => {
                     </Badge>
                 </Notice>
                 <Info>
-                    <Dropdown overlay={menu}>
-                        <div>
-                            <Avatar size={32} icon={<UserOutlined />} />
-                            <span style={{ marginLeft: 8 }}>{'流~星~泪'}</span>
-                        </div>
+                    <Dropdown overlay={menu} trigger={['click']}>
+                        <UserInfo>
+                            <Avatar size={32} src="/logo192.png" />
+                            <NickName>{'流~星~泪流~星~泪流~星~泪'}</NickName>
+                        </UserInfo>
                     </Dropdown>
                 </Info>
             </Right>
         </Containner>
     );
 };
-export default Header;
+export default withRouter(Header);

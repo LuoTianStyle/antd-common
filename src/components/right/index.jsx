@@ -1,9 +1,9 @@
 import React from 'react';
-import BreadcrumbContent from '../BreadcrumbContent';
+import TabContent from '../TabContent';
 const RightContent = () => {
     return (
         <>
-            <BreadcrumbContent />
+            <TabContent />
         </>
     );
 };

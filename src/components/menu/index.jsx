@@ -7,10 +7,36 @@ const { SubMenu } = Menu;
 const { Item } = Menu;
 const MenuName = styled.span``;
 const Menus = (props) => {
-    const { match, history } = props;
-    const selectedKey = match.params.name;
+    const { location, history } = props;
+    const selectedKey = location.pathname.slice(1);
     const clickMenu = (e) => {
         history.push(`/${e.key}`);
+    };
+    const menuHandle = (item) => {
+        if (item.isShow !== false && item.children) {
+            return (
+                <SubMenu
+                    key={item.path}
+                    title={
+                        <span>
+                            {item.icon}
+                            <MenuName>{item.name}</MenuName>
+                        </span>
+                    }
+                >
+                    {item.children.map((item) => menuHandle(item))}
+                </SubMenu>
+            );
+        } else if (item.isShow !== false) {
+            return (
+                <Item onClick={clickMenu} key={item.path}>
+                    {item.icon}
+                    <MenuName>{item.name}</MenuName>
+                </Item>
+            );
+        } else {
+            return null;
+        }
     };
     return (
         <Menu
@@ -19,48 +45,7 @@ const Menus = (props) => {
             defaultSelectedKeys={['index']}
             selectedKeys={[selectedKey]}
         >
-            {Router.map((item) => {
-                if (item.isShow !== false) {
-                    if (item.children) {
-                        return (
-                            <SubMenu
-                                key={item.path}
-                                title={
-                                    <span>
-                                        {item.icon}
-                                        <MenuName>{item.name}</MenuName>
-                                    </span>
-                                }
-                            >
-                                {item.children.map((item) => {
-                                    if (item.isShow !== false) {
-                                        return (
-                                            <Item
-                                                onClick={clickMenu}
-                                                key={item.path}
-                                            >
-                                                {item.icon}
-                                                <MenuName>{item.name}</MenuName>
-                                            </Item>
-                                        );
-                                    } else {
-                                        return '';
-                                    }
-                                })}
-                            </SubMenu>
-                        );
-                    } else {
-                        return (
-                            <Item onClick={clickMenu} key={item.path}>
-                                {item.icon}
-                                <MenuName>{item.name}</MenuName>
-                            </Item>
-                        );
-                    }
-                } else {
-                    return '';
-                }
-            })}
+            {Router.map((item) => menuHandle(item))}
         </Menu>
     );
 };

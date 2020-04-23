@@ -1,11 +1,35 @@
 import React from 'react';
-import { HomeOutlined, LinkOutlined, UserOutlined } from '@ant-design/icons';
+import {
+    HomeOutlined,
+    LinkOutlined,
+    UserOutlined,
+    BulbOutlined,
+} from '@ant-design/icons';
 import TreeUtil from '@/utils/tree';
-import Index from '@/views/index';
-import RouteOne from '@/views/routeOne';
-import RouteTwo from '@/views/routeTwo';
-import RouteThree from '@/views/routeThree';
+import LoadableComponent from '@/utils/loadable';
+const Login = LoadableComponent(import('@/views/login'));
+const Register = LoadableComponent(import('@/views/register'));
+const Index = LoadableComponent(import('@/views/index'));
+const RouteOne = LoadableComponent(import('@/views/routeOne'));
+const RouteTwo = LoadableComponent(import('@/views/routeTwo'));
+const RouteThree = LoadableComponent(import('@/views/routeThree'));
+const Works = LoadableComponent(import('@/views/works'));
+const Error = LoadableComponent(import('@/views/404'));
 export const Router = [
+    {
+        name: '登录',
+        path: 'login',
+        component: Login,
+        isAuthenticated: false,
+        isShow: false,
+    },
+    {
+        name: '注册',
+        path: 'register',
+        component: Register,
+        isAuthenticated: false,
+        isShow: false,
+    },
     {
         name: '首页',
         path: 'index',
@@ -23,6 +47,14 @@ export const Router = [
                 path: 'route_test_1',
                 icon: <LinkOutlined />,
                 component: RouteOne,
+                children: [
+                    {
+                        name: '测试1',
+                        path: 'route_test_1',
+                        icon: <LinkOutlined />,
+                        component: RouteOne,
+                    },
+                ],
             },
             {
                 name: '测试2',
@@ -49,7 +81,19 @@ export const Router = [
         name: '用户管理',
         path: 'user',
         icon: <UserOutlined />,
-        component: Index,
+        component: RouteThree,
+    },
+    {
+        name: '我的作品',
+        path: 'works',
+        icon: <BulbOutlined />,
+        component: Works,
+    },
+    {
+        name: '404',
+        path: '404',
+        isShow: false,
+        component: Error,
     },
 ];
 const RouteArr = [];
@@ -69,5 +113,9 @@ const callbacks = (tree, stack) => {
     }
 };
 TreeUtil.dfsForEach(routeTree, callbacks);
-console.log(RouteArr);
-export const RouteMap = RouteArr;
+export const RouteMap = RouteArr.filter(
+    (item) => item.isAuthenticated !== false
+);
+export const RouteMap1 = RouteArr.filter(
+    (item) => item.isAuthenticated === false
+);

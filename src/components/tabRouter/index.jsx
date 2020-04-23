@@ -1,4 +1,4 @@
-import RouterContext from '@/context/routerContext';
+import RouterContext from '@/context/RouterContext';
 import React from 'react';
 const TabRouter = (Component) => {
     return (props) => {
