@@ -3,7 +3,7 @@ import { Tabs, Button, Menu, Dropdown } from 'antd';
 import { AlignRightOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { RouteMap } from '@/router';
+import { RouteBasic } from '@/router';
 import RouterContext from '@/context/RouterContext';
 const { TabPane } = Tabs;
 const TabWrapper = styled(Tabs)`
@@ -14,7 +14,7 @@ const TabWrapper = styled(Tabs)`
 `;
 const TabContent = (props) => {
     const { history, location } = props;
-    const paneActive = RouteMap.filter((item) => item.closable === false);
+    const paneActive = RouteBasic.filter((item) => item.closable === false);
     const [activeKey, setActiveKey] = useState(paneActive[0].path);
     const [panes, setPanes] = useState(paneActive);
     useEffect(() => {
@@ -22,7 +22,7 @@ const TabContent = (props) => {
         const path_array = panes.map((item) => item.path);
 
         if (!path_array.includes(currentPath)) {
-            const currentPane = RouteMap.find(
+            const currentPane = RouteBasic.find(
                 (item) => item.path === currentPath
             );
             if (!currentPane) {
@@ -85,7 +85,7 @@ const TabContent = (props) => {
     };
     const renderList = () => {
         return panes.map((pane) => {
-            const currentPane = RouteMap.find(
+            const currentPane = RouteBasic.find(
                 (item) => item.path === pane.path
             );
             const Content = currentPane.component;

@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import TabRouter from '@/components/TabRouter';
 const RouteThree = (props) => {
     const { history, remove } = props;
-    console.log(props);
     const goto = () => {
         history.push('route_test_1');
     };

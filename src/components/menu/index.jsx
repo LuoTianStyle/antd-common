@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { Router } from '@/router';
+import { RouteBasicMap } from '@/router';
 const { SubMenu } = Menu;
 const { Item } = Menu;
 const MenuName = styled.span``;
@@ -45,7 +45,7 @@ const Menus = (props) => {
             defaultSelectedKeys={['index']}
             selectedKeys={[selectedKey]}
         >
-            {Router.map((item) => menuHandle(item))}
+            {RouteBasicMap.map((item) => menuHandle(item))}
         </Menu>
     );
 };
