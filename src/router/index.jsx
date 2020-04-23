@@ -10,9 +10,7 @@ import LoadableComponent from '@/utils/loadable';
 const Login = LoadableComponent(import('@/views/login'));
 const Register = LoadableComponent(import('@/views/register'));
 const Index = LoadableComponent(import('@/views/index'));
-const RouteOne = LoadableComponent(import('@/views/routeOne'));
-const RouteTwo = LoadableComponent(import('@/views/routeTwo'));
-const RouteThree = LoadableComponent(import('@/views/routeThree'));
+const Link = LoadableComponent(import('@/views/link'));
 const Works = LoadableComponent(import('@/views/works'));
 const Error = LoadableComponent(import('@/views/404'));
 const RouteArr = [];
@@ -48,37 +46,24 @@ const Router = [
                 path: 'route',
                 children: [
                     {
-                        name: '测试1',
-                        path: 'route_test_1',
+                        name: '嵌套路由',
+                        path: 'innner',
                         icon: <LinkOutlined />,
-                        component: RouteOne,
                         children: [
                             {
-                                name: '测试1',
-                                path: 'route_test_1',
+                                name: '测试',
+                                path: 'test',
                                 icon: <LinkOutlined />,
-                                component: RouteOne,
+                                component: Link,
                             },
                         ],
                     },
                     {
-                        name: '测试2',
-                        path: 'route_test_2',
-                        icon: <LinkOutlined />,
-                        component: RouteTwo,
-                    },
-                    {
-                        name: '测试3',
-                        path: 'route_test_3',
-                        icon: <LinkOutlined />,
-                        component: RouteThree,
-                    },
-                    {
-                        name: '测试4',
-                        path: 'route_test_4',
+                        name: '隐藏',
+                        path: 'hide',
                         icon: <LinkOutlined />,
                         isShow: false,
-                        component: RouteThree,
+                        component: Link,
                     },
                 ],
             },
@@ -86,7 +71,7 @@ const Router = [
                 name: '用户管理',
                 path: 'user',
                 icon: <UserOutlined />,
-                component: RouteThree,
+                component: Index,
             },
             {
                 name: '我的作品',
