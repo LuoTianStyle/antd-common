@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { message, Menu, Dropdown, Badge, Avatar } from 'antd';
+import { Menu, Dropdown, Badge, Avatar } from 'antd';
 import { withRouter } from 'react-router-dom';
 import screenfull from 'screenfull';
 import {
@@ -88,23 +88,8 @@ const NickNameItem = styled.div`
     word-break: break-all;
 `;
 const Header = (props) => {
-    const { collapsed, toggle, history } = props;
-    const [color, setColor] = useState('#f1892d');
+    const { collapsed, toggle, history, color, changeColor } = props;
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const changeColor = (color) => {
-        window.less
-            .modifyVars({
-                '@primary-color': color,
-            })
-            .then(() => {
-                localStorage.setItem(
-                    'user-theme',
-                    JSON.stringify({ '@primary-color': color })
-                );
-                setColor(color);
-                message.success('更换主题颜色成功');
-            });
-    };
     const toggleFullscreen = () => {
         if (screenfull.isEnabled) {
             screenfull.toggle().then(() => {
@@ -121,16 +106,6 @@ const Header = (props) => {
         localStorage.removeItem('userInfo');
         history.push('/login');
     };
-    useEffect(() => {
-        const userTheme = JSON.parse(localStorage.getItem('user-theme'));
-        if (userTheme) {
-            const defaultColor = userTheme['@primary-color'];
-            window.less.modifyVars({
-                '@primary-color': defaultColor,
-            });
-            setColor(defaultColor);
-        }
-    }, []);
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         return function cleanup() {

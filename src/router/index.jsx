@@ -11,6 +11,7 @@ const Login = LoadableComponent(import('@/views/login'));
 const Register = LoadableComponent(import('@/views/register'));
 const Index = LoadableComponent(import('@/views/index'));
 const Link = LoadableComponent(import('@/views/link'));
+const Links = LoadableComponent(import('@/views/links'));
 const Works = LoadableComponent(import('@/views/works'));
 const Error = LoadableComponent(import('@/views/404'));
 const RouteArr = [];
@@ -20,12 +21,12 @@ const Router = [
         children: [
             {
                 name: '登录',
-                path: 'login',
+                path: '/login',
                 component: Login,
             },
             {
                 name: '注册',
-                path: 'register',
+                path: '/register',
                 component: Register,
             },
         ],
@@ -35,7 +36,7 @@ const Router = [
         children: [
             {
                 name: '首页',
-                path: 'index',
+                path: '/index',
                 icon: <HomeOutlined />,
                 component: Index,
                 closable: false,
@@ -43,16 +44,16 @@ const Router = [
             {
                 name: '路由',
                 icon: <LinkOutlined />,
-                path: 'route',
+                path: '/route',
                 children: [
                     {
                         name: '嵌套路由',
-                        path: 'innner',
+                        path: '/innner',
                         icon: <LinkOutlined />,
                         children: [
                             {
                                 name: '测试',
-                                path: 'test',
+                                path: '/router/test',
                                 icon: <LinkOutlined />,
                                 component: Link,
                             },
@@ -60,28 +61,28 @@ const Router = [
                     },
                     {
                         name: '隐藏',
-                        path: 'hide',
+                        path: '/hide:id',
                         icon: <LinkOutlined />,
                         isShow: false,
-                        component: Link,
+                        component: Links,
                     },
                 ],
             },
             {
                 name: '用户管理',
-                path: 'user',
+                path: '/user',
                 icon: <UserOutlined />,
                 component: Index,
             },
             {
                 name: '我的作品',
-                path: 'works',
+                path: '/works',
                 icon: <BulbOutlined />,
                 component: Works,
             },
             {
                 name: '404',
-                path: '404',
+                path: '/404',
                 isShow: false,
                 component: Error,
             },

@@ -18,15 +18,52 @@ const TabContent = (props) => {
     const [activeKey, setActiveKey] = useState(paneActive[0].path);
     const [panes, setPanes] = useState(paneActive);
     useEffect(() => {
-        const currentPath = props.history.location.pathname.substr(1);
+        const currentPath = history.location.pathname;
+        const query = history.location.query;
         const path_array = panes.map((item) => item.path);
-
-        if (!path_array.includes(currentPath)) {
+        if (query) {
+            const hasQuery = panes.filter((item) => item.query);
+            const queryArr = currentPath.split('/');
+            const queryId = queryArr[queryArr.length - 1];
+            const queryOther = queryArr.slice(0, queryArr.length - 1).join('/');
+            const query_array = hasQuery.map((item) => item.path);
+            if (!query_array.includes(currentPath)) {
+                const hasQueryBasic = RouteBasic.filter((item) =>
+                    item.path.includes(':')
+                );
+                const currentPane = hasQueryBasic.find(
+                    (item) => item.path.split(':')[0] === queryOther
+                );
+                if (!currentPane) {
+                    if (history.location.pathname === '/') {
+                        history.push(`/index`);
+                    } else {
+                        history.push(`/404`);
+                    }
+                } else {
+                    const closable =
+                        currentPane.closable === undefined
+                            ? true
+                            : currentPane.closable;
+                    const newPane = {
+                        name: currentPane.name,
+                        path: currentPath,
+                        closable,
+                        query: { id: parseInt(queryId) },
+                    };
+                    setPanes([...panes, newPane]);
+                }
+            }
+        } else if (!path_array.includes(currentPath)) {
             const currentPane = RouteBasic.find(
                 (item) => item.path === currentPath
             );
             if (!currentPane) {
-                history.push(`/404`);
+                if (history.location.pathname === '/') {
+                    history.push(`/index`);
+                } else {
+                    history.push(`/404`);
+                }
             } else {
                 const closable =
                     currentPane.closable === undefined
@@ -41,7 +78,7 @@ const TabContent = (props) => {
             }
         }
         setActiveKey(currentPath);
-    }, [props, panes, history]);
+    }, [panes, location, history]);
 
     const onChange = (activeKey) => {
         setActiveKey(activeKey);
@@ -80,14 +117,28 @@ const TabContent = (props) => {
     };
     const onTabClick = (e) => {
         if (e !== location.pathname.slice(1)) {
-            history.push(`/${e}`);
+            history.push(e);
         }
     };
     const renderList = () => {
         return panes.map((pane) => {
-            const currentPane = RouteBasic.find(
-                (item) => item.path === pane.path
-            );
+            let currentPane = {};
+            if (pane.query) {
+                const hasQueryBasic = RouteBasic.filter((item) =>
+                    item.path.includes(':')
+                );
+                const queryArr = pane.path.split('/');
+                const queryOther = queryArr
+                    .slice(0, queryArr.length - 1)
+                    .join('/');
+                currentPane = hasQueryBasic.find(
+                    (item) => item.path.split(':')[0] === queryOther
+                );
+            } else {
+                currentPane = RouteBasic.find(
+                    (item) => item.path === pane.path
+                );
+            }
             const Content = currentPane.component;
             return (
                 <TabPane
@@ -134,7 +185,7 @@ const TabContent = (props) => {
         }
     };
     const closeOther = () => {
-        const currentRoute = history.location.pathname.substr(1);
+        const currentRoute = history.location.pathname;
         const panesNew = panes.filter(
             (item) => item.closable === false || item.path === currentRoute
         );

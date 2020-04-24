@@ -8,9 +8,9 @@ const { Item } = Menu;
 const MenuName = styled.span``;
 const Menus = (props) => {
     const { location, history } = props;
-    const selectedKey = location.pathname.slice(1);
+    const selectedKey = location.pathname;
     const clickMenu = (e) => {
-        history.push(`/${e.key}`);
+        history.push(e.key);
     };
     const menuHandle = (item) => {
         if (item.isShow !== false && item.children) {
@@ -42,7 +42,7 @@ const Menus = (props) => {
         <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={['index']}
+            defaultSelectedKeys={['/index']}
             selectedKeys={[selectedKey]}
         >
             {RouteBasicMap.map((item) => menuHandle(item))}

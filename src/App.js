@@ -10,6 +10,7 @@ const App = () => (
             <Route path="/login" component={UserLayout} />
             <Route path="/register" component={UserLayout} />
             <PrivateRoute path="/" component={BasicLayout} />
+
         </Switch>
     </HashRouter>
 );

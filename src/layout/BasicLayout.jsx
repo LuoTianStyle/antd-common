@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Layout } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, message } from 'antd';
 import styled from 'styled-components';
 import Headers from '@/components/header';
 import Menus from '@/components/menu';
@@ -15,6 +15,15 @@ const LeftSider = styled(Sider)`
     height: 100%;
     overflow: auto;
     box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+    .ant-menu-submenu-active {
+        .ant-menu-submenu-arrow {
+            &::after,
+            &::before {
+                background: ${(props) =>
+                    `linear-gradient(to right, ${props.color}, ${props.color}) !important`};
+            }
+        }
+    }
 `;
 const Logo = styled.div`
     height: 32px;
@@ -45,6 +54,31 @@ const RightContent = styled(Content)`
 `;
 const BasicLayout = (props) => {
     const [collapsed, setCollapsed] = useState(false);
+    const [color, setColor] = useState('');
+    const changeColor = (color) => {
+        window.less
+            .modifyVars({
+                '@primary-color': color,
+            })
+            .then(() => {
+                localStorage.setItem(
+                    'user-theme',
+                    JSON.stringify({ '@primary-color': color })
+                );
+                setColor(color);
+                message.success('更换主题颜色成功');
+            });
+    };
+    useEffect(() => {
+        const userTheme = JSON.parse(localStorage.getItem('user-theme'));
+        if (userTheme) {
+            const defaultColor = userTheme['@primary-color'];
+            window.less.modifyVars({
+                '@primary-color': defaultColor,
+            });
+            setColor(defaultColor);
+        }
+    }, []);
     return (
         <Layout>
             <LeftSider
@@ -53,6 +87,7 @@ const BasicLayout = (props) => {
                 collapsible
                 width={256}
                 collapsed={collapsed}
+                color={color}
             >
                 <Logo />
                 <Menus />
@@ -61,6 +96,8 @@ const BasicLayout = (props) => {
                 <RightHeader extend={collapsed.toString()}>
                     <Headers
                         collapsed={collapsed}
+                        color={color}
+                        changeColor={changeColor}
                         toggle={() => setCollapsed(!collapsed)}
                     />
                 </RightHeader>
